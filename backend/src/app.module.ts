@@ -4,6 +4,9 @@ import { AppService } from './app.service';
 
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { GraphQLModule } from '@nestjs/graphql';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -21,7 +24,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
         synchronize: true,
         autoLoadEntities: true,
       })
-    })
+    }),
+    GraphQLModule.forRoot<ApolloDriverConfig>({
+      driver: ApolloDriver,
+      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      sortSchema: true,
+      context: ({ req }) => ({ req }),
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],
