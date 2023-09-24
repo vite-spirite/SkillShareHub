@@ -7,6 +7,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { join } from 'path';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { join } from 'path';
       sortSchema: true,
       context: ({ req }) => ({ req }),
     }),
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
