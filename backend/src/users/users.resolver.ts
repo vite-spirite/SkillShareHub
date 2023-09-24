@@ -11,7 +11,7 @@ export class UsersResolver {
     return this.usersService.findAll();
   }
 
-  @Query(() => User)
+  @Query(() => User, {nullable: true})
   async user(@Args('uid') uid: string): Promise<User|null> {
     return this.usersService.findOne(uid);
   }
