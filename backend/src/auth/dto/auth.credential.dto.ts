@@ -5,10 +5,10 @@ import {IsEmail, MinLength} from 'class-validator'
 @InputType()
 export class AuthCredentialDto {
     @Field()
-    @IsEmail()
+    //@IsEmail()
     email: string;
 
     @Field()
-    @MinLength(6)
+    //@MinLength(6)
     password: string;
 }
