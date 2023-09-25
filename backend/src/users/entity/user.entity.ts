@@ -16,6 +16,10 @@ export class User {
     @Column()
     @Field()
     name: string;
+
+    @Column({nullable: true, default: null})
+    @Field({nullable: true})
+    bio: string;
     
     @Column({unique: true})
     email: string;
