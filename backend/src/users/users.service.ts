@@ -4,6 +4,7 @@ import { User } from './entity/user.entity';
 import { Repository } from 'typeorm';
 import { UserCreateDto } from './dto/user.create.dto';
 import * as argon2 from 'argon2';
+import { rmSync } from 'fs';
 
 @Injectable()
 export class UsersService {
@@ -45,5 +46,29 @@ export class UsersService {
 
     async comparePassword(password: string, hash: string): Promise<boolean> {
         return argon2.verify(hash, password);
+    }
+
+    async updateAvatar(id: number, avatar: string): Promise<User> {
+        const user = await this.findOneById(id);
+
+        if(user.avatar) {
+            rmSync(`./uploads/avatars/${user.avatar}`);
+        }
+
+        user.avatar = avatar;
+        await this.usersRepository.save(user);
+        return user;
+    }
+
+    async updateBanner(id: number, banner: string): Promise<User> {
+        const user = await this.findOneById(id);
+
+        if(user.banner) {
+            rmSync(`./uploads/banner/${user.banner}`);
+        }
+
+        user.banner = banner;
+        await this.usersRepository.save(user);
+        return user;
     }
 }

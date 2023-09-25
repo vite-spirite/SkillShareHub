@@ -22,6 +22,14 @@ export class User {
     @Column()
     password: string;
 
+    @Field({nullable: true})
+    @Column({nullable: true})
+    avatar: string;
+
+    @Field({nullable: true})
+    @Column({nullable: true})
+    banner: string;
+
     @CreateDateColumn()
     @Field()
     createdAt: Date;

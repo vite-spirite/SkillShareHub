@@ -29,6 +29,8 @@ type Query {
 }
 
 type User {
+  avatar: String
+  banner: String
   createdAt: DateTime!
   name: String!
   uid: String!
@@ -36,6 +38,8 @@ type User {
 }
 
 input UserCreateDto {
+  avatar: String = null
+  banner: String = null
   confirmPassword: String!
   email: String!
   name: String!
