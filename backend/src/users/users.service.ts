@@ -5,10 +5,12 @@ import { Repository } from 'typeorm';
 import { UserCreateDto } from './dto/user.create.dto';
 import * as argon2 from 'argon2';
 import { rmSync } from 'fs';
+import { Article } from 'src/articles/entity/article.entity';
+import { ArticlesService } from 'src/articles/articles.service';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectRepository(User) private usersRepository: Repository<User>) {}
+    constructor(@InjectRepository(User) private usersRepository: Repository<User>, private articleService: ArticlesService) {}
     
     async findAll(): Promise<User[]> {
         return this.usersRepository.find();
@@ -70,5 +72,10 @@ export class UsersService {
         user.banner = banner;
         await this.usersRepository.save(user);
         return user;
+    }
+
+    async getArticles(id: number): Promise<Article[]> {
+        console.log('call')
+        return await this.articleService.findByAuthorId(id);
     }
 }

@@ -2,6 +2,30 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type Article {
+  author: User!
+  content: String!
+  createdAt: DateTime!
+  published: Boolean!
+  publishedAt: DateTime
+  title: String!
+  uid: String!
+  upadtedAt: DateTime!
+}
+
+input ArticleCreateDto {
+  content: String!
+  published: Boolean!
+  title: String!
+}
+
+type ArticlePaginate {
+  articles: [Article!]!
+  page: Float!
+  perPage: Float!
+  total: Float!
+}
+
 input AuthCredentialDto {
   email: String!
   password: String!
@@ -18,17 +42,20 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type Mutation {
+  create(article: ArticleCreateDto!): Article!
   login(credentials: AuthCredentialDto!): AuthTokenDto
   register(user: UserCreateDto!): User
 }
 
 type Query {
+  articles(page: Float!): ArticlePaginate!
   me: User!
   user(uid: String!): User
   users: [User!]!
 }
 
 type User {
+  articles: [Article!]!
   avatar: String
   banner: String
   createdAt: DateTime!
