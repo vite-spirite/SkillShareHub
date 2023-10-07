@@ -1,7 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
 import { ObjectType, Field } from "@nestjs/graphql";
-import { nanoid } from "nanoid";
-import { type } from "os";
 import { User } from "src/users/entity/user.entity";
 
 @ObjectType()
