@@ -2,6 +2,7 @@ import { ObjectType, Field } from "@nestjs/graphql";
 import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn, OneToMany } from "typeorm";
 import { nanoid } from "nanoid";
 import { Article } from "src/articles/entity/article.entity";
+import { Topic } from "src/topic/entity/topic.entity";
 
 @ObjectType()
 @Entity()
@@ -39,6 +40,9 @@ export class User {
     @OneToMany(() => Article, article => article.author)
     articles: Article[];
 
+    @OneToMany(() => Topic, topic => topic.createdBy)
+    topics: Topic[];
+    
     @CreateDateColumn()
     @Field()
     createdAt: Date;

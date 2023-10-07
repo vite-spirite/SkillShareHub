@@ -9,6 +9,7 @@ type Article {
   published: Boolean!
   publishedAt: DateTime
   title: String!
+  topics: [Topic!]!
   uid: String!
   upadtedAt: DateTime!
 }
@@ -17,6 +18,7 @@ input ArticleCreateDto {
   content: String!
   published: Boolean!
   title: String!
+  topics: [String!]!
 }
 
 type ArticlePaginate {
@@ -53,6 +55,14 @@ type Query {
   me: User!
   user(uid: String!): User
   users: [User!]!
+}
+
+type Topic {
+  createdAt: DateTime!
+  createdBy: User!
+  id: Float!
+  identifier: String!
+  name: String!
 }
 
 type User {

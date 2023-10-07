@@ -1,16 +1,21 @@
 import { Field, InputType } from "@nestjs/graphql";
-import { Article } from "../entity/article.entity";
-import { IsBoolean, IsString } from "class-validator";
+import { IsBoolean, IsString, MaxLength, isString } from "class-validator";
 
 @InputType()
-export class ArticleCreateDto implements Partial<Article> {
+export class ArticleCreateDto {
     @Field()
     @IsString()
     title: string;
+
     @Field()
     @IsString()
     content: string;
+
     @Field()
     @IsBoolean()
     published: boolean;
+
+    @Field(type => [String])
+    @MaxLength(20, {each: true})
+    topics: string[];
 }

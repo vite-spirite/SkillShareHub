@@ -7,6 +7,7 @@ import { ArticleCreateDto } from './dto/article.create.dto';
 import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { AuthJwtGuard } from 'src/auth/guards/auth.jwt.guard';
 import { UseGuards } from '@nestjs/common';
+import { Topic } from 'src/topic/entity/topic.entity';
 
 @Resolver(of => Article)
 export class ArticlesResolver {
@@ -26,5 +27,10 @@ export class ArticlesResolver {
   @ResolveField('author', returns => User)
   async author(@Parent() article: Article) {
     return this.articlesService.findAuthor(article.authorId);
+  }
+
+  @ResolveField('topics', returns => [Topic])
+  async topics(@Parent() article: Article) {
+    return this.articlesService.findTopics(article.id);
   }
 }

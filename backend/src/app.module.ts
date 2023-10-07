@@ -10,6 +10,7 @@ import { join } from 'path';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticlesModule } from './articles/articles.module';
+import { TopicModule } from './topic/topic.module';
 
 @Module({
   imports: [
@@ -37,6 +38,7 @@ import { ArticlesModule } from './articles/articles.module';
     UsersModule,
     AuthModule,
     ArticlesModule,
+    TopicModule,
   ],
   controllers: [AppController],
   providers: [AppService],

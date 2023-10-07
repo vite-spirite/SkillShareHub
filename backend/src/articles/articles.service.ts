@@ -9,12 +9,14 @@ import { ArticlePaginate } from './dto/article.paginate.dto';
 
 import slugify from 'slugify';
 import { nanoid } from 'nanoid';
+import { TopicService } from 'src/topic/topic.service';
 
 @Injectable()
 export class ArticlesService {
     constructor(
         @InjectRepository(Article) private articlesRepository: Repository<Article>,
-        @Inject(forwardRef(() => UsersService)) private userService: UsersService) {}
+        @Inject(forwardRef(() => UsersService)) private userService: UsersService,
+        private topicService: TopicService) {}
 
     async findAll(page: number): Promise<ArticlePaginate> {
         const total = await this.articlesRepository.count({where: {published: true}, select: ['id']});
@@ -44,7 +46,20 @@ export class ArticlesService {
     }
 
     async create(data: ArticleCreateDto, user: User): Promise<Article> {
-        const partial: Partial<Article> = {...data};
+        const partial: Partial<Article> = {
+            title: data.title,
+            content: data.content,
+            published: data.published || false,
+        };
+
+        if(data.topics) {
+            const topics = await Promise.all(data.topics.map(async topic => {
+                return await this.topicService.findOrCreate(topic, user.id);
+            }));
+            console.log(topics);
+
+            partial.topics = topics;
+        }
 
         if(data.published) {
             partial.publishedAt = new Date();
@@ -59,5 +74,9 @@ export class ArticlesService {
 
     async findAuthor(authorId: number): Promise<User> {
         return await this.userService.findOneById(authorId);
+    }
+
+    async findTopics(articleId: number): Promise<any> {
+        return (await this.articlesRepository.findOne({where: {id: articleId}, relations: ['topics'], select: ['topics']})).topics;
     }
 }

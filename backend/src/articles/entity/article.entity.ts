@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne, CreateDateColumn, UpdateDateColumn } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm";
 import { ObjectType, Field } from "@nestjs/graphql";
 import { User } from "src/users/entity/user.entity";
+import { Topic } from "src/topic/entity/topic.entity";
 
 @ObjectType()
 @Entity()
@@ -30,6 +31,11 @@ export class Article {
 
     @Column()
     authorId: number;
+
+    @ManyToMany(() => Topic)
+    @JoinTable()
+    @Field(type => [Topic])
+    topics: Topic[];
 
     @Field()
     @CreateDateColumn()
