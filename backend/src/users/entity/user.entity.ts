@@ -3,6 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateCol
 import { nanoid } from "nanoid";
 import { Article } from "src/articles/entity/article.entity";
 import { Topic } from "src/topic/entity/topic.entity";
+import { Comment } from "src/comment/entity/comment.entity";
 
 @ObjectType()
 @Entity()

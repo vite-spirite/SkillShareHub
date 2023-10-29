@@ -4,6 +4,8 @@
 
 type Article {
   author: User!
+  comments: [Comment!]!
+  commentsPaginate(page: Float!): CommentPaginate!
   content: String!
   createdAt: DateTime!
   published: Boolean!
@@ -38,6 +40,29 @@ type AuthTokenDto {
   refresh_token: String!
 }
 
+type Comment {
+  article: Article!
+  body: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  user: User!
+}
+
+type CommentPaginate {
+  cursor: Float!
+  data: [Comment!]!
+  firstPage: Float!
+  lastPage: Float!
+  nextPage: Float!
+  prevPage: Float!
+  total: Float!
+}
+
+input CreateCommentInput {
+  articleId: Float!
+  body: String!
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -45,6 +70,7 @@ scalar DateTime
 
 type Mutation {
   create(article: ArticleCreateDto!): Article!
+  createComment(comment: CreateCommentInput!): Comment!
   login(credentials: AuthCredentialDto!): AuthTokenDto
   register(user: UserCreateDto!): User
   updateUser(data: UserUpdateDto!): User!
@@ -52,6 +78,7 @@ type Mutation {
 
 type Query {
   articles(page: Float!): ArticlePaginate!
+  commentsPaginate(articleId: Float!, page: Float!): CommentPaginate!
   me: User!
   user(uid: String!): User
   users: [User!]!

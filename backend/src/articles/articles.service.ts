@@ -10,13 +10,15 @@ import { ArticlePaginate } from './dto/article.paginate.dto';
 import slugify from 'slugify';
 import { nanoid } from 'nanoid';
 import { TopicService } from 'src/topic/topic.service';
+import { CommentService } from 'src/comment/comment.service';
 
 @Injectable()
 export class ArticlesService {
     constructor(
         @InjectRepository(Article) private articlesRepository: Repository<Article>,
         @Inject(forwardRef(() => UsersService)) private userService: UsersService,
-        private topicService: TopicService) {}
+        private topicService: TopicService,
+        @Inject(forwardRef(() => CommentService)) private readonly commentService: CommentService) {}
 
     async findAll(page: number): Promise<ArticlePaginate> {
         const total = await this.articlesRepository.count({where: {published: true}, select: ['id']});
@@ -78,5 +80,9 @@ export class ArticlesService {
 
     async findTopics(articleId: number): Promise<any> {
         return (await this.articlesRepository.findOne({where: {id: articleId}, relations: ['topics'], select: ['topics']})).topics;
+    }
+
+    async commentPaginate(articleId: number, page: number): Promise<any> {
+        return await this.commentService.paginateComments(articleId, page, 10);
     }
 }

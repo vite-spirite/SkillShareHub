@@ -1,7 +1,9 @@
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, ManyToOne, CreateDateColumn, UpdateDateColumn, ManyToMany, JoinTable, OneToMany } from "typeorm";
 import { ObjectType, Field } from "@nestjs/graphql";
 import { User } from "src/users/entity/user.entity";
 import { Topic } from "src/topic/entity/topic.entity";
+import { Comment } from "src/comment/entity/comment.entity";
+import { CommentPaginate } from "src/comment/dts/comment.paginate.dto";
 
 @ObjectType()
 @Entity()
@@ -36,6 +38,13 @@ export class Article {
     @JoinTable()
     @Field(type => [Topic])
     topics: Topic[];
+
+    @OneToMany(() => Comment, comment => comment.article)
+    @Field(type => [Comment])
+    comments: Comment[];
+
+    @Field(() => CommentPaginate)
+    commentsPaginate: CommentPaginate;
 
     @Field()
     @CreateDateColumn()

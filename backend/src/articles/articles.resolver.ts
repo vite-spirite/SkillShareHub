@@ -8,6 +8,7 @@ import { CurrentUser } from 'src/auth/decorators/current-user.decorator';
 import { AuthJwtGuard } from 'src/auth/guards/auth.jwt.guard';
 import { UseGuards } from '@nestjs/common';
 import { Topic } from 'src/topic/entity/topic.entity';
+import { CommentPaginate } from 'src/comment/dts/comment.paginate.dto';
 
 @Resolver(of => Article)
 export class ArticlesResolver {
@@ -32,5 +33,10 @@ export class ArticlesResolver {
   @ResolveField('topics', returns => [Topic])
   async topics(@Parent() article: Article) {
     return this.articlesService.findTopics(article.id);
+  }
+
+  @ResolveField('commentsPaginate', returns => CommentPaginate)
+  async commentsPaginate(@Parent() article: Article, @Args('page') page: number): Promise<CommentPaginate> {
+    return await this.articlesService.commentPaginate(article.id, page);
   }
 }

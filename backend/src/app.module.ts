@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { ArticlesModule } from './articles/articles.module';
 import { TopicModule } from './topic/topic.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { TopicModule } from './topic/topic.module';
     AuthModule,
     ArticlesModule,
     TopicModule,
+    CommentModule,
   ],
   controllers: [AppController],
   providers: [AppService],
